@@ -21,11 +21,11 @@ class CreateTasksTable extends Migration
             $table->unsignedInteger('earned_value')->nullable($value=true);
             $table->unsignedInteger('actual_cost')->nullable($value=true);
             $table->unsignedBigInteger('project_id');
-            $table->unsignedBigInteger('next_task_id');
+            $table->unsignedBigInteger('previous_task_id')->nullable();
             $table->string('name');
             Schema::enableForeignKeyConstraints();
             $table->foreign('project_id')->references('id')->on('projects');
-            $table->foreign('next_task_id')->references('id')->on('tasks');
+            $table->foreign('previous_task_id')->references('id')->on('tasks');
             Schema::disableForeignKeyConstraints();
             
             $table->timestamps();
