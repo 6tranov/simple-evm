@@ -23,7 +23,7 @@ class CreateProjectsTable extends Migration
             $table->date('completed_on')->nullable($value=true);
             $table->unsignedBigInteger('user_id');
             Schema::enableForeignKeyConstraints();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             Schema::disableForeignKeyConstraints();
             
             $table->timestamps();

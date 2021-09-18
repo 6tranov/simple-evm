@@ -27,6 +27,24 @@ class ProjectsTableSeeder extends Seeder
                 'complete_scheduled_on' => '2021-2-1',
                 'user_id' => $user_id
             ]
-            );
+        );
+        
+        DB::table('projects')->insert(
+            [
+                'name' => 'project2',
+                'start_scheduled_on' => '2021-1-1',
+                'complete_scheduled_on' => '2021-2-1',
+                'user_id' => $user_id
+            ]
+        );
+        
+        DB::table('projects')->insert(
+            [
+                'name' => 'project3',
+                'start_scheduled_on' => '2021-1-1',
+                'complete_scheduled_on' => '2021-2-1',
+                'user_id' => $user_id
+            ]
+        );
     }
 }
