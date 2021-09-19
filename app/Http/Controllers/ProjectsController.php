@@ -18,4 +18,8 @@ class ProjectsController extends Controller
         $tasks = Task::getTasksByProjectId($project->id);
         return view('Project.show')->with(['project' => $project,'tasks'=>$tasks]);
     }
+    
+    public function create(){
+        return view('Project.create');
+    }
 }
