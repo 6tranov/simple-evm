@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Project;
-
+use App\Task;
 
 class ProjectsController extends Controller
 {
     //
     public function index(Project $project){
-        return view('index')->with(['projects' => $project->getPaginateByLimit(2)]);
+        return view('Project.index')->with(['projects' => $project->getPaginateByLimit(2)]);
+    }
+    
+    public function show(Project $project){
+        //タスクをすべて取得する。
+        $tasks = Task::getTasksByProjectId($project->id);
+        return view('Project.show')->with(['project' => $project,'tasks'=>$tasks]);
     }
 }
