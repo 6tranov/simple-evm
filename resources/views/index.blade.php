@@ -6,6 +6,8 @@
 
         <title>Laravel</title>
         
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        
         <!-- Styles -->
         <style>
           .body{
@@ -73,6 +75,10 @@
             width: 50%;
             margin:0 auto;
           }
+          
+          .pagination-parent{
+              margin:0 auto;
+          }
         </style>
     </head>
     <body class="body">
@@ -104,8 +110,8 @@
         @endforeach
       
       <br/>
-        <div class="paginate">
-            {{$projects->links()}}
+        <div class="d-flex justify-content-center">
+            {{$projects->links('vendor.pagination.bootstrap-4')}}
         </div>
       
     </body>
