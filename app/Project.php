@@ -30,7 +30,8 @@ class Project extends Model
     public function getByLimit(int $limit_count = 10){
         return $this->limit($limit_count)->get();
     }
-    public function getPaginateByLimit(int $limit_count = 10){
+    public function getPaginateByLimit(int $limit_count = 10,bool $isUsersRecords = true){
+        if($isUsersRecords) return $this->where('user_id',Auth::id())->paginate($limit_count);
         return $this->paginate($limit_count);
     }
     public function saveFromInput($input){
