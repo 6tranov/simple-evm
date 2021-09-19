@@ -19,8 +19,8 @@ class CreateFollowsTable extends Migration
             $table->unsignedBigInteger('following_id');
             $table->unsignedBigInteger('followed_id');
             Schema::enableForeignKeyConstraints();
-            $table->foreign('following_id')->references('id')->on('users');
-            $table->foreign('followed_id')->references('id')->on('users');
+            $table->foreign('following_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('followed_id')->references('id')->on('users')->onDelete('cascade');
             Schema::disableForeignKeyConstraints();
             
             $table->timestamps();
