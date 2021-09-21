@@ -35,15 +35,20 @@
       <form action="/projects" method="POST">
             @csrf
               プロジェクト名<br>
-                <input type="text" name="project[name]" placeholder="プロジェクト名"/><br><br>
+                <input type="text" name="project[name]" placeholder="プロジェクト名" value="{{ old('project.name') }}"/><br><br>
+                <p style="color:red">{{ $errors->first('project.name') }}</p>
               開始予定日<br>
-                <input type="date" name="project[start_scheduled_on]"><br><br>
+                <input type="date" name="project[start_scheduled_on]" value="{{ old('project.start_scheduled_on') }}"><br><br>
+                <p style="color:red">{{ $errors->first('project.start_scheduled_on') }}</p>
               完了予定日<br>
-              <input type="date" name="project[complete_scheduled_on]"><br><br>
+              <input type="date" name="project[complete_scheduled_on]" value="{{ old('project.complete_scheduled_on') }}"><br><br>
+              <p style="color:red">{{ $errors->first('project.complete_scheduled_on') }}</p>
               1日当たりの時間<br>
-              <input type="number" name="project[time_per_day]"><br><br>
+              <input type="number" name="project[time_per_day]" value="{{ old('project.time_per_day') }}"><br><br>
+              <p style="color:red">{{ $errors->first('project.time_per_day') }}</p>
               タスクの総量(ページ数など)<br>
-              <input type="number" name="project[total_cost]"><br><br>
+              <input type="number" name="project[total_cost]" value="{{ old('project.total_cost') }}"><br><br>
+              <p style="color:red">{{ $errors->first('project.total_cost') }}</p>
               <div style="text-align:center">
             <input type="submit" value="作成"/>
         </form>
