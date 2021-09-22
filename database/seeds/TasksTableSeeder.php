@@ -20,10 +20,11 @@ class TasksTableSeeder extends Seeder
         
         for ($i = 0; $i < 3; $i++) {
              $project_id = $projects[$i]->id;
-            // テストデータ挿入
+            // タスクのレコードをそれぞれのプロジェクトに対して3つずつ挿入
             DB::table('tasks')->insert(
                 [
-                    'due_on' => '2021-1-1',
+                    'start_scheduled_on' => '2021-1-1',
+                    'complete_scheduled_on' => '2021-1-1',
                     'planned_value' => 30,
                     'project_id' => $project_id,
                     'name' => 'task1'
@@ -35,7 +36,8 @@ class TasksTableSeeder extends Seeder
         
             DB::table('tasks')->insert(
                 [
-                    'due_on' => '2021-1-1',
+                    'start_scheduled_on' => '2021-1-2',
+                    'complete_scheduled_on' => '2021-1-2',
                     'planned_value' => 30,
                     'project_id' => $project_id,
                     'previous_task_id' => $first_task_id,
@@ -48,7 +50,8 @@ class TasksTableSeeder extends Seeder
         
             DB::table('tasks')->insert(
                 [
-                    'due_on' => '2021-2-1',
+                    'start_scheduled_on' => '2021-1-3',
+                    'complete_scheduled_on' => '2021-1-3',
                     'planned_value' => 30,
                     'project_id' => $project_id,
                     'previous_task_id' => $second_task_id,

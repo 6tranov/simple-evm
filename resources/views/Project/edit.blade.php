@@ -57,8 +57,16 @@
     </head>
     <body class="body">
         
-        <div class="top">プロジェクト詳細</div>
-        
+        <div class="top">プロジェクト編集</div>
+      
+      
+      <form method="PUT" action="/projects/{{$project->id}}">
+          @csrf
+          @method('PUT')
+          
+          
+      </form>
+      
       <br>
       <div class="top-container">
         <div class="project-name">{{$project->name}}</div>
@@ -68,7 +76,7 @@
       <br>
       <table border="1" class="project-table">
         <tr><th>SPI</th><th>CPI</th><th>開始予定日</th><th>完了予定日</th><th>開始日</th><th>完了日</th></tr>
-        <tr><td>{{$project->cpi()}}</td><td>{{$project->spi()}}</td><td>{{$project->startScheduledOn()}}</td><td>{{$project->completeScheduledOn()}}</td><td>{{$project->startedOn()}}</td><td>{{$project->completedOn()}}</td></tr>
+        <tr><td>{{$project->cpi()}}</td><td>{{$project->spi()}}</td><td>{{$project->start_scheduled_on}}</td><td>{{$project->complete_scheduled_on}}</td><td>{{$project->started_on}}</td><td>{{$project->completed_on}}</td></tr>
       </table>
       
       <br>
@@ -78,9 +86,9 @@
       
       <br>
       <table border="1" class="tasks-table">
-        <tr><th>タスク名</th><th>開始予定日</th><th>完了予定日</th><th>開始日</th><th>完了日</th><th>PV</th><th>EV</th><th>AC</th></tr>
+        <tr><th>タスク名</th><th>予定日</th><th>実施日</th><th>PV</th><th>EV</th><th>AC</th></tr>
         @foreach ($tasks as $task)
-        <tr><td><a href="/tasks/{{$task->id}}">{{$task->name}}</a></td><td>{{$task->start_scheduled_on}}</td><td>{{$task->complete_scheduled_on}}</td><td>{{$task->started_on}}</td><td>{{$task->completed_on}}</td><td>{{$task->planned_value}}</td><td>{{$task->earned_value}}</td><td>{{$task->actual_cost}}</td></tr>
+        <tr><td><a href="/tasks/{{$task->id}}">{{$task->name}}</a></td><td>{{$task->due_on}}</td><td>{{$task->done_on}}</td><td>{{$task->planned_value}}</td><td>{{$task->earned_value}}</td><td>{{$task->actual_cost}}</td></tr>
         @endforeach
       </table>
       

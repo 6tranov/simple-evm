@@ -19,12 +19,10 @@ class ProjectsTableSeeder extends Seeder
         $users = DB::table('users')->get();
         $user_id = $users[0]->id;
         
-        // テストデータ挿入
+        // プロジェクトのレコードを3つ挿入
         DB::table('projects')->insert(
             [
                 'name' => 'project1',
-                'start_scheduled_on' => '2021-1-1',
-                'complete_scheduled_on' => '2021-2-1',
                 'user_id' => $user_id
             ]
         );
@@ -32,8 +30,6 @@ class ProjectsTableSeeder extends Seeder
         DB::table('projects')->insert(
             [
                 'name' => 'project2',
-                'start_scheduled_on' => '2021-1-1',
-                'complete_scheduled_on' => '2021-2-1',
                 'user_id' => $user_id
             ]
         );
@@ -41,8 +37,6 @@ class ProjectsTableSeeder extends Seeder
         DB::table('projects')->insert(
             [
                 'name' => 'project3',
-                'start_scheduled_on' => '2021-1-1',
-                'complete_scheduled_on' => '2021-2-1',
                 'user_id' => $user_id
             ]
         );

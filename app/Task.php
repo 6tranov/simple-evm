@@ -10,7 +10,8 @@ class Task extends Model
     //
     protected $fillable = [
         'name',
-        'due_on',
+        'start_scheduled_on',
+        'complete_scheduled_on',
         'planned_value',
         'project_id',
         'previous_task_id',
@@ -22,15 +23,18 @@ class Task extends Model
     }
     
     public static function saveFromInput($input){
-        //(ok)due_on,(ok)planned_value,(ok)project_id,(ok)previous_task_id,(ok)name
+        $start = $input['start_scheduled_on'];
+        $complete = $input['complete_scheduled_on'];
         $planned_value = $input['time_per_day'];
-        $dateSpan = (strtotime($input['complete_scheduled_on']) - strtotime($input['start_scheduled_on'])) / 86400 + 1;
+        $project_id = $input['project_id'];
+        $total_cost = $input['total_cost'];
+        
+        $dateSpan = (strtotime($complete) - strtotime($start)) / 86400 + 1;
         if($dateSpan < 0){
             throw new Exception('日付の順番がおかしいです。');
         }
         
         //1日当たりのcostの計算
-        $total_cost = $input['total_cost'];
         for ($i = 0; $i < $dateSpan; $i++) {
             $costs[$i] = (int)($total_cost / $dateSpan);
         }
@@ -52,13 +56,15 @@ class Task extends Model
         
         //タスクの登録
         $previous_task_id = NULL;
-        $datetime = new \DateTime($input['start_scheduled_on']);
+        $start_datetime = new \DateTime($start);
+        $complete_datetime = new \DateTime($complete);
         for ($i = 0; $i < $dateSpan; $i++) {
             $data = [
                 'name' => $task_name[$i],
-                'due_on' =>$datetime->modify('+' .$i. 'day')->format('Y/m/d'),
+                'start_scheduled_on' =>$start_datetime->modify('+' .$i. 'day')->format('Y/m/d'),
+                'complete_scheduled_on' => $complete_datetime->modify('+' .$i. 'day')->format('Y/m/d'),
                 'planned_value' => $planned_value,
-                'project_id' => $input['project_id'],
+                'project_id' => $project_id,
                 'previous_task_id' => $previous_task_id,
                 ];
             //$this->fill($data)->save();
@@ -66,5 +72,18 @@ class Task extends Model
             $task->save();
             $previous_task_id = $task->id;
         }
+    }
+    
+    public static function getFirstTaskByProjectId($project_id){
+        return DB::table('tasks')->where('project_id',$project_id)->where('previous_task_id',NULL)->first();
+    }
+    public static function getLastTaskByProjectId($project_id){
+        //DB::enableQueryLog();
+        return  DB::table('tasks')->where('project_id',$project_id)->whereNotIn('id',function($query){
+            $query->select('previous_task_id')->from('tasks')->whereNotNull('previous_task_id');
+        })->first();
+        
+        //dd(DB::getQueryLog());
+        //return $result;
     }
 }

@@ -5,14 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Task;
 
 class Project extends Model
 {
     //
     protected $fillable = [
         "name",
-        "start_scheduled_on",
-        "complete_scheduled_on",
         "user_id",
         ];
     public function spi(){
@@ -38,8 +37,6 @@ class Project extends Model
         //projectsにレコードを追加
         $data = [
         'name' => $input['name'],
-        'start_scheduled_on' => $input['start_scheduled_on'],
-        'complete_scheduled_on' => $input['complete_scheduled_on'],
         'user_id' => Auth::id(),
         ];
         $this->fill($data)->save();
@@ -50,9 +47,27 @@ class Project extends Model
             'complete_scheduled_on' => $input['complete_scheduled_on'],
             'time_per_day' => $input['time_per_day'],
             'total_cost' => $input['total_cost'],
-            'project_id' => $this->id,//$project->id,
+            'project_id' => $this->id,
         ];
         Task::saveFromInput($data);
     }
     
+    public function startScheduledOn(){
+        //該当のプロジェクトIDに紐づいている、前のタスクIDがNULLなタスクが、最初のタスク。
+        $first_task = Task::getFirstTaskByProjectId($this->id);
+        return $first_task->start_scheduled_on;
+    }
+    public function completeScheduledOn(){
+        //前のタスクのカラムに存在しない、タスクIDをサブクエリを使って取得する。
+        $last_task = Task::getLastTaskByProjectId($this->id);
+        return $last_task->complete_scheduled_on;
+    }
+    public function startedOn(){
+        $first_task = Task::getFirstTaskByProjectId($this->id);
+        return $first_task->started_on;
+    }
+    public function completedOn(){
+        $last_task = Task::getLastTaskByProjectId($this->id);
+        return $last_task->completed_on;
+    }
 }
