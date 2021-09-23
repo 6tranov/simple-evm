@@ -94,5 +94,12 @@
         @endforeach
       </table>
       
+      <br/>
+      <form action="/projects/{{ $project->id }}"  method="post" style="text-align:center;">
+        @csrf
+        @method('DELETE')
+        <button type="submit">プロジェクト削除</button> 
+      </form>
+      
     </body>
 </html>
