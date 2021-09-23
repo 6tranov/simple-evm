@@ -12,6 +12,8 @@ class Task extends Model
         'name',
         'start_scheduled_on',
         'complete_scheduled_on',
+        'started_on',
+        'completed_on',
         'planned_value',
         'project_id',
         'previous_task_id',
