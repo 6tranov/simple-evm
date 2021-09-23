@@ -7,7 +7,7 @@ use App\Project;
 use App\Task;
 use App\Http\Requests\StoreProjectRequest; 
 use App\Http\Requests\EditProjectRequest;
-
+use App\Http\Requests\DeleteProjectRequest;
 
 class ProjectsController extends Controller
 {
@@ -44,5 +44,9 @@ class ProjectsController extends Controller
     public function update(EditProjectRequest $request,Project $project){
         $project->updateName($request['project']['name']);
         return redirect('/projects/' . $project->id);
+    }
+    public function delete(DeleteProjectRequest $request,Project $project){
+        $project->delete();
+        return redirect('/projects');
     }
 }
