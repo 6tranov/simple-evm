@@ -25,3 +25,4 @@ Route::get('/projects/{project}/edit','ProjectsController@edit');
 Route::get('/projects/{project}','ProjectsController@show');
 Route::post('/projects','ProjectsController@store');
 Route::put('/projects/{project}','ProjectsController@update');
+Route::delete('/projects/{project}','ProjectsController@delete');
