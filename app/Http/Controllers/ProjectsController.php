@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Project;
 use App\Task;
-use App\Http\Requests\ProjectRequest; 
+use App\Http\Requests\StoreProjectRequest; 
 
 
 class ProjectsController extends Controller
@@ -31,9 +31,13 @@ class ProjectsController extends Controller
     public function create(){
         return view('Project.create');
     }
-    public function store(ProjectRequest $request,Project $project){
+    public function store(StoreProjectRequest $request,Project $project){
         $project->saveFromInput($request['project']);
         return redirect('/projects/' . $project->id);
+    }
+    
+    public function edit(){
+        
     }
     
 }

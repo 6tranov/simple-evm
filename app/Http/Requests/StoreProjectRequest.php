@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\DateOrder;
 
-class ProjectRequest extends FormRequest
+class StoreProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -35,6 +35,5 @@ class ProjectRequest extends FormRequest
             'project.time_per_day'=>'required|integer|min:1|max:86400',
             'project.total_cost'=>'required|integer|min:1|max:10000'
         ];
-        
     }
 }
