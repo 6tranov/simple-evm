@@ -26,3 +26,6 @@ Route::get('/projects/{project}','ProjectsController@show');
 Route::post('/projects','ProjectsController@store');
 Route::put('/projects/{project}','ProjectsController@update');
 Route::delete('/projects/{project}','ProjectsController@delete');
+
+Route::get('/tasks/{task}','TasksController@edit');
+Route::put('/tasks/{task}','TasksController@update');

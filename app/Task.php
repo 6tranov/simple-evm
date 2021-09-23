@@ -86,4 +86,7 @@ class Task extends Model
         //dd(DB::getQueryLog());
         //return $result;
     }
+    public function getProject(){
+        return DB::table('projects')->where('id',$this->project_id)->first();
+    }
 }

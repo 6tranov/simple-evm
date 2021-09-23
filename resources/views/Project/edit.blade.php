@@ -68,11 +68,14 @@
           @csrf
           @method('PUT')
           
+          
+        @if(count($errors)>0)
           プロジェクト名<br/>
-        <input type="text" name="project[name]" value="{{$project->name}}"><br/>
-        @error('project.name')
-        <input type="text" name="project[name]" value="{{ old('project.name') }}"><br/>
-        @enderror
+          <input type="text" name="project[name]" value="{{ old('project.name') }}"><br/>
+        @else
+          プロジェクト名<br/>
+          <input type="text" name="project[name]" value="{{$project->name}}"><br/>
+        @endif
         <p style="color:red">{{ $errors->first('project.name') }}</p>
         <div style="text-align:center">
           <input type="submit" value="完了">
