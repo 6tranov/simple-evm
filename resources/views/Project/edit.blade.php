@@ -95,11 +95,19 @@
       </table>
       
       <br/>
-      <form action="/projects/{{ $project->id }}"  method="post" style="text-align:center;">
+      <form action="/projects/{{ $project->id }}"  method="post" style="text-align:center;" onSubmit="return projectDeleteCheck()">
         @csrf
         @method('DELETE')
         <button type="submit">プロジェクト削除</button> 
       </form>
       
+      <script type="text/javascript">
+        function projectDeleteCheck(){
+          if(window.confirm('プロジェクトを削除します。よろしいですか？')) return true;
+          
+          window.alert('キャンセルされました。');
+          return false;
+        }
+      </script>
     </body>
 </html>
