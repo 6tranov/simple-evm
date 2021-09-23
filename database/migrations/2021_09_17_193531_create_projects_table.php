@@ -27,6 +27,7 @@ class CreateProjectsTable extends Migration
             Schema::disableForeignKeyConstraints();
             
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
