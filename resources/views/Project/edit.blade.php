@@ -39,6 +39,10 @@
             border:solid;
             border-color:black;
           }
+          .back-to-project{
+            border:solid;
+            border-color:black;
+          }
           
           .project-table{
             margin:0 auto;
@@ -57,23 +61,29 @@
     </head>
     <body class="body">
         
-        <div class="top">プロジェクト詳細</div>
-        
-      <br>
-      <div class="top-container">
-        <div class="project-name">{{$project->name}}</div>
-        <div class="edit"><a href="/projects/{{$project->id}}/edit">編集</a></div>
-      </div>
+        <div class="top">プロジェクト編集</div>
       
-      <br>
-      <table border="1" class="project-table">
-        <tr><th>SPI</th><th>CPI</th><th>開始予定日</th><th>完了予定日</th><th>開始日</th><th>完了日</th></tr>
-        <tr><td>{{$project->cpi()}}</td><td>{{$project->spi()}}</td><td>{{$project->startScheduledOn()}}</td><td>{{$project->completeScheduledOn()}}</td><td>{{$project->startedOn()}}</td><td>{{$project->completedOn()}}</td></tr>
-      </table>
+      
+      <form method="POST" action="/projects/{{$project->id}}">
+          @csrf
+          @method('PUT')
+          
+          プロジェクト名<br/>
+        <input type="text" name="project[name]" value="{{$project->name}}"><br/>
+        @error('project.name')
+        <input type="text" name="project[name]" value="{{ old('project.name') }}"><br/>
+        @enderror
+        <p style="color:red">{{ $errors->first('project.name') }}</p>
+        <div style="text-align:center">
+          <input type="submit" value="完了">
+        </div>
+      </form>
+      
       
       <br>
       <div style="text-align:center">
         <a href="/projects" class="back-to-projects">プロジェクト一覧に戻る</a>
+        <a href="/projects/{{$project->id}}" class="back-to-project">プロジェクト詳細に戻る</a>
       </div>
       
       <br>

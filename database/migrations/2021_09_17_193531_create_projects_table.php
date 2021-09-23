@@ -17,10 +17,10 @@ class CreateProjectsTable extends Migration
             $table->bigIncrements('id');
             
             $table->string('name');
-            $table->date('start_scheduled_on');
-            $table->date('complete_scheduled_on');
-            $table->date('started_on')->nullable($value=true);
-            $table->date('completed_on')->nullable($value=true);
+            //$table->date('start_scheduled_on');
+            //$table->date('complete_scheduled_on');
+            //$table->date('started_on')->nullable($value=true);
+            //$table->date('completed_on')->nullable($value=true);
             $table->unsignedBigInteger('user_id');
             Schema::enableForeignKeyConstraints();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
