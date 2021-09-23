@@ -70,4 +70,13 @@ class Project extends Model
         $last_task = Task::getLastTaskByProjectId($this->id);
         return $last_task->completed_on;
     }
+    public function updateName($name){
+        $input = [
+            'id' => $this->id,
+            'name' => $name,
+        ];
+        $this->fill($input)->save();
+        
+        //$this->where('id',$this->id)->update(['name'=>$name]);
+    }
 }

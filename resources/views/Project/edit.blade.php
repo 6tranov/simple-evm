@@ -64,17 +64,20 @@
         <div class="top">プロジェクト編集</div>
       
       
-      <form method="PUT" action="/projects/{{$project->id}}">
+      <form method="POST" action="/projects/{{$project->id}}">
           @csrf
           @method('PUT')
           
           プロジェクト名<br/>
-        <input type="text" value="{{$project->name}}"><br/>
+        <input type="text" name="project[name]" value="{{$project->name}}"><br/>
+        @error('project.name')
+        <input type="text" name="project[name]" value="{{ old('project.name') }}"><br/>
+        @enderror
+        <p style="color:red">{{ $errors->first('project.name') }}</p>
         <div style="text-align:center">
           <input type="submit" value="完了">
         </div>
       </form>
-      
       
       
       <br>

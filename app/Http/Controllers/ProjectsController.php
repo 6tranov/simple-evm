@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Project;
 use App\Task;
 use App\Http\Requests\StoreProjectRequest; 
+use App\Http\Requests\EditProjectRequest;
 
 
 class ProjectsController extends Controller
@@ -36,8 +37,12 @@ class ProjectsController extends Controller
         return redirect('/projects/' . $project->id);
     }
     
-    public function edit(){
-        
+    public function edit(Project $project){
+        $tasks = Task::getTasksByProjectId($project->id);
+        return view('Project.edit')->with(['tasks'=>$tasks,'project'=>$project]);
     }
-    
+    public function update(EditProjectRequest $request,Project $project){
+        $project->updateName($request['project']['name']);
+        return redirect('/projects/' . $project->id);
+    }
 }
