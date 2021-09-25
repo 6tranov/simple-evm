@@ -15,7 +15,7 @@ class TasksController extends Controller
         return view('Task.edit')->with(['task'=>$task,'project'=>$project]);
     }
     public function update(UpdateTaskRequest $request,Task $task){
-        
+        $input = $request['task'];
         $task->fill($input)->save();
         
         return redirect('/projects/' . $task->project_id);

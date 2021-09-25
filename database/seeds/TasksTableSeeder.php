@@ -27,12 +27,13 @@ class TasksTableSeeder extends Seeder
                     'complete_scheduled_on' => '2021-1-1',
                     'planned_value' => 30,
                     'project_id' => $project_id,
-                    'name' => 'task1'
+                    'order_index' => 1,
+                    'name' => 'task1',
                 ]
             );
         
-            $tasks = DB::table('tasks')->get();
-            $first_task_id = $tasks[0]->id;
+            //$tasks = DB::table('tasks')->get();
+            //$first_task_id = $tasks[0]->id;
         
             DB::table('tasks')->insert(
                 [
@@ -40,13 +41,14 @@ class TasksTableSeeder extends Seeder
                     'complete_scheduled_on' => '2021-1-2',
                     'planned_value' => 30,
                     'project_id' => $project_id,
-                    'previous_task_id' => $first_task_id,
-                    'name' => 'task2'
+                    //'previous_task_id' => $first_task_id,
+                    'order_index' => 2,
+                    'name' => 'task2',
                 ]
             );
         
-            $tasks = DB::table('tasks')->get();
-            $second_task_id = $tasks[1]->id;
+            //$tasks = DB::table('tasks')->get();
+            //$second_task_id = $tasks[1]->id;
         
             DB::table('tasks')->insert(
                 [
@@ -54,8 +56,9 @@ class TasksTableSeeder extends Seeder
                     'complete_scheduled_on' => '2021-1-3',
                     'planned_value' => 30,
                     'project_id' => $project_id,
-                    'previous_task_id' => $second_task_id,
-                    'name' => 'task3'
+                    //'previous_task_id' => $second_task_id,
+                    'order_index' => 3,
+                    'name' => 'task3',
                 ]
             );
         }

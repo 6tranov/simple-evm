@@ -33,11 +33,11 @@ class UpdateTaskRequest extends FormRequest
             'task.name' => 'required|string|min:1|max:100',
             'task.start_scheduled_on' => ['required','date',$dateOrder1],
             'task.complete_scheduled_on' => ['required','date',$dateOrder1],
-            'task.started_on' => ['date',$dateOrder2],
-            'task.completed_on' => ['date',$dateOrder2],
+            'task.started_on' => ['nullable','date',$dateOrder2],
+            'task.completed_on' => ['nullable','date',$dateOrder2],
             'task.planned_value' => 'required|integer|min:1',
-            'task.earned_value' => 'integer|min:0',
-            'task.actual_cost' => 'integer|min:0'
+            'task.earned_value' => 'nullable|integer|min:0',
+            'task.actual_cost' => 'nullable|integer|min:0'
         ];
     }
 }

@@ -16,7 +16,8 @@ class Task extends Model
         'completed_on',
         'planned_value',
         'project_id',
-        'previous_task_id',
+        'order_index',
+        //'previous_task_id',
     ];
     
     public static function getTasksByProjectId($project_id){
@@ -57,22 +58,24 @@ class Task extends Model
         }
         
         //タスクの登録
-        $previous_task_id = NULL;
+        //$previous_task_id = NULL;
         $start_datetime = new \DateTime($start);
         $complete_datetime = new \DateTime($complete);
         for ($i = 0; $i < $dateSpan; $i++) {
+            $order_index = $i+1;
             $data = [
                 'name' => $task_name[$i],
                 'start_scheduled_on' =>$start_datetime->modify('+' .$i. 'day')->format('Y/m/d'),
                 'complete_scheduled_on' => $complete_datetime->modify('+' .$i. 'day')->format('Y/m/d'),
                 'planned_value' => $planned_value,
                 'project_id' => $project_id,
-                'previous_task_id' => $previous_task_id,
+                'order_index' => $order_index,
+                //'previous_task_id' => $previous_task_id,
                 ];
             //$this->fill($data)->save();
             $task = new Task($data);
             $task->save();
-            $previous_task_id = $task->id;
+            //$previous_task_id = $task->id;
         }
     }
     
