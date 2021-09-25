@@ -22,8 +22,8 @@ class CreateTasksTable extends Migration
             $table->date('started_on')->nullable($value=true);
             $table->date('completed_on')->nullable($value=true);
             $table->unsignedInteger('planned_value');
-            $table->unsignedInteger('earned_value')->nullable($value=true);
-            $table->unsignedInteger('actual_cost')->nullable($value=true);
+            $table->unsignedInteger('earned_value');
+            $table->unsignedInteger('actual_cost');
             $table->unsignedBigInteger('project_id');
             //$table->unsignedBigInteger('previous_task_id')->nullable();
             $table->unsignedInteger('order_index');

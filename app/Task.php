@@ -15,6 +15,8 @@ class Task extends Model
         'started_on',
         'completed_on',
         'planned_value',
+        'earned_value',
+        'actual_cost',
         'project_id',
         'order_index',
         //'previous_task_id',
