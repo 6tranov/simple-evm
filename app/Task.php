@@ -82,14 +82,16 @@ class Task extends Model
     }
     
     public static function getFirstTaskByProjectId($project_id){
-        return DB::table('tasks')->where('project_id',$project_id)->where('previous_task_id',NULL)->first();
+        return DB::table('tasks')->where('project_id',$project_id)->orderBy('order_index')->first();
     }
     public static function getLastTaskByProjectId($project_id){
         //DB::enableQueryLog();
+        return DB::table('tasks')->where('project_id',$project_id)->orderBy('order_index','desc')->first();
+        /*
         return  DB::table('tasks')->where('project_id',$project_id)->whereNotIn('id',function($query){
             $query->select('previous_task_id')->from('tasks')->whereNotNull('previous_task_id');
         })->first();
-        
+        */
         //dd(DB::getQueryLog());
         //return $result;
     }
