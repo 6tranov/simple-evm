@@ -62,14 +62,16 @@ class Task extends Model
         //タスクの登録
         //$previous_task_id = NULL;
         $start_datetime = new \DateTime($start);
-        $complete_datetime = new \DateTime($complete);
+        $complete_datetime = new \DateTime($start);
         for ($i = 0; $i < $dateSpan; $i++) {
             $order_index = $i+1;
             $data = [
                 'name' => $task_name[$i],
-                'start_scheduled_on' =>$start_datetime->modify('+' .$i. 'day')->format('Y/m/d'),
-                'complete_scheduled_on' => $complete_datetime->modify('+' .$i. 'day')->format('Y/m/d'),
+                'start_scheduled_on' =>$start_datetime->format('Y/m/d'),
+                'complete_scheduled_on' => $complete_datetime->format('Y/m/d'),
                 'planned_value' => $planned_value,
+                'earned_value'=>0,
+                'actual_cost'=>0,
                 'project_id' => $project_id,
                 'order_index' => $order_index,
                 //'previous_task_id' => $previous_task_id,
@@ -77,6 +79,9 @@ class Task extends Model
             //$this->fill($data)->save();
             $task = new Task($data);
             $task->save();
+            
+            $start_datetime->modify('+1day');
+            $complete_datetime->modify('+1day');
             //$previous_task_id = $task->id;
         }
     }
@@ -97,5 +102,55 @@ class Task extends Model
     }
     public function getProject(){
         return DB::table('projects')->where('id',$this->project_id)->first();
+    }
+    public static function getOrderedTasksArrayByProjectId($project_id){
+        //順番を変えられる（開始予定と完了予定が等しい）タスクを取得する。
+        //そして日付ごとに配列にして、2次元の配列をreturnする。
+        $tasks = DB::table('tasks')->where('project_id',$project_id)->whereColumn('start_scheduled_on','complete_scheduled_on')->orderBy('order_index')->get();
+    
+        //2つ以上同じ日付のものがあるタスクに絞る
+        //まず、2つ以上存在する日付を抽出する。
+        $is_extracted = false;
+        $formerDate = NULL;
+        $extractedDates = [];
+        foreach ($tasks as $task) {
+            if(($formerDate == $task->start_scheduled_on) && !$is_extracted){
+                $extractedDates[]=$task->start_scheduled_on;
+                $is_extracted = true;
+            } elseif ($formerDate !== $task->start_scheduled_on){
+                $is_extracted = false;
+            }
+            $formerDate = $task->start_scheduled_on;
+        }
+        
+        function hasExtractedDate($task,$extractedDates){
+            foreach ($extractedDates as $date) {
+                if($date == $task->start_scheduled_on) return true;
+            }
+            return false;
+        }
+        
+        //抽出された日付を持つタスクだけを抽出する。
+        $extractedTasks = [];
+        foreach ($tasks as $task) {
+            if(hasExtractedDate($task,$extractedDates)){
+                $extractedTasks[]=$task;
+            }
+        }
+        
+        if(count($extractedTasks) == 0)return [];
+        
+    
+        //日付ごとに分割する
+        $i = 0;
+        $formerDate = $extractedTasks[0]->start_scheduled_on;
+        $result = [];
+        foreach ($extractedTasks as $task) {
+            if($formerDate !== $task->start_scheduled_on) $i++;
+            $result[$i][] = $task;
+            $formerDate = $task->start_scheduled_on;
+        }
+        
+        return $result;
     }
 }

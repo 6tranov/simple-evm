@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\Project;
 use App\Http\Requests\UpdateTaskRequest;
 
 class TasksController extends Controller
@@ -19,5 +20,9 @@ class TasksController extends Controller
         $task->fill($input)->save();
         
         return redirect('/projects/' . $task->project_id);
+    }
+    public function editOrders(Project $project){
+        $tasksArray = Task::getOrderedTasksArrayByProjectId($project->id);
+        return view('Task.edit_orders')->with(['tasksArray'=>$tasksArray,'project'=>$project]);
     }
 }

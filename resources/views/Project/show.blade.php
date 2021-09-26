@@ -68,12 +68,17 @@
       <br>
       <table border="1" class="project-table">
         <tr><th>SPI</th><th>CPI</th><th>開始予定日</th><th>完了予定日</th><th>開始日</th><th>完了日</th></tr>
-        <tr><td>{{$project->cpi()}}</td><td>{{$project->spi()}}</td><td>{{$project->startScheduledOn()}}</td><td>{{$project->completeScheduledOn()}}</td><td>{{$project->startedOn()}}</td><td>{{$project->completedOn()}}</td></tr>
+        <tr><td>{{$project->spi()}}</td><td>{{$project->cpi()}}</td><td>{{$project->startScheduledOn()}}</td><td>{{$project->completeScheduledOn()}}</td><td>{{$project->startedOn()}}</td><td>{{$project->completedOn()}}</td></tr>
       </table>
       
       <br>
       <div style="text-align:center">
         <a href="/projects" class="back-to-projects">プロジェクト一覧に戻る</a>
+      </div>
+      
+      <br/>
+      <div style="text-align:center">
+        <a href="/projects/{{$project->id}}/task-orders/edit" class="back-to-projects">タスクの順番を変更する</a>
       </div>
       
       <br>
