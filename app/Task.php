@@ -28,6 +28,8 @@ class Task extends Model
     }
     
     public static function saveFromInput($input){
+        DB::beginTransaction();
+        //$inputの内容
         $start = $input['start_scheduled_on'];
         $complete = $input['complete_scheduled_on'];
         $planned_value = $input['time_per_day'];
@@ -83,6 +85,13 @@ class Task extends Model
             $start_datetime->modify('+1day');
             $complete_datetime->modify('+1day');
             //$previous_task_id = $task->id;
+        }
+        
+        if(Task::checkFailed()){
+            DB::rollBack();
+            throw new \Exception("チェックで誤りが生じました。");
+        } else{
+            DB::commit();
         }
     }
     
@@ -152,5 +161,102 @@ class Task extends Model
         }
         
         return $result;
+    }
+    public function save(array $options = [])//Override
+    {
+        DB::beginTransaction();
+        parent::save();
+        if(Task::checkFailed()){
+            DB::rollBack();
+            throw new \Exception("チェックで誤りが生じました。");
+        } else{
+            DB::commit();
+        }
+    }
+    //制約の確認。テーブルに操作を加えるメソッドはすべて中で
+    //トランザクションでこのメソッドを最後に実装する。
+    //親クラスのsaveなどもオーバーライドして同様に実装する。
+    private static function checkFailed():bool
+    {
+        /*
+        1. start_scheduled_onは、一つ前のタスクのcomplete_scheduled_onまたはそれ以降
+        2. (start_scheduled_on,complete_scheduled_on)は、order_indexで並び替えたもの(A)と
+            start_scheduled_on、complete_scheduled_onの順に並び変えたもの(B)の
+            全てのレコードに対して、AのフィールドとBのフィールドが一致する。
+        3. 一つのプロジェクトに対して、order_indexは重複しない。
+        */
+        
+        //1
+        //project_id、order_indexで並び替えたサブクエリ
+        $q1 = DB::table('tasks')->select('id','project_id','start_scheduled_on',)->orderBy('project_id')->orderBy('order_index')->toSql();
+        //project_id、order_indexで並び替え、取得したidに1を加えたサブクエリ
+        $q2 = DB::table('tasks')->selectRaw("id+1 as idpp,project_id,complete_scheduled_on")->orderBy('project_id')->orderBy('order_index')->toSql();
+        //それらを結合する
+        $result1 = DB::table(DB::Raw('('.$q1.') as c1'))->join(DB::Raw('('.$q2.') as c2'),function($join){
+            $join->on("c1.id","=","c2.idpp")
+            ->on("c1.project_id","=","c2.project_id")
+            ->on("c1.start_scheduled_on","<","c2.complete_scheduled_on");
+        })->first();
+        //この結果がnullになっていれば正常。nullでなければ前のタスクの終了日が開始日よりも後になっているものが存在する。
+        //それはおかしいのでtrueを返す。
+        if(!is_null($result1))return true;
+        
+        //2
+        //order_indexで並び替えたサブクエリ
+        $idQuery = DB::table('tasks')->select('id','project_id','start_scheduled_on','complete_scheduled_on')->orderBy('project_id')->orderBy('order_index')->toSql();
+        //日付で並び替えたサブクエリ
+        $dateQuery = DB::table('tasks')->select('id','project_id','start_scheduled_on','complete_scheduled_on')->orderBy('project_id')->orderBy('start_scheduled_on')->orderBy('complete_scheduled_on')->toSql();
+        //それらを結合する
+        $result2 = DB::table(DB::Raw('('.$idQuery.') as c1'))->join(DB::Raw('('.$dateQuery.') as c2'),function ($join) {
+            $join->on("c1.id","=","c2.id")
+            ->on("c1.start_scheduled_on","!=","c2.start_scheduled_on")
+            ->on("c1.complete_scheduled_on","!=","c2.complete_scheduled_on");
+        })->first();
+        //この結果がnullになっていれば正常。nullでなければorder_indexの並びがおかしいのでtrueを返す。
+        if(!is_null($result2))return true;
+        
+
+        //3
+        //もし特定のプロジェクトに対してorder_indexに重複があれば、
+        //project_idとorder_indexの組み合わせでcountが2以上になるものが存在するはず。それがあったらおかしいのでtrueを返す。
+        $result3 = DB::table('tasks')->selectRaw('count(order_index)')->groupBy('project_id', 'order_index')->havingRaw('count(order_index)>1')->get();
+        if(count($result3)>0)return true;
+        
+        return false;
+    }
+    public static function updateOrders($request){
+        $old_task_order = $request['old_task_order'];
+        $new_task_order = $request['new_task_order'];
+        $id = $request['id'];
+        
+        DB::beginTransaction();
+        
+        //すべてのタスクに対して、それを登録しなおす。
+        for ($i = 0; $i < count($id); $i++) {
+            $task = Task::find($id[$i]);
+            $input = [
+                'id'=>$task->id,
+                'name'=>$task->name,
+                'project_id'=>$task->project_id,
+                'order_index'=>$task->order_index,
+                'start_scheduled_on'=>$task->start_scheduled_on,
+                'complete_scheduled_on'=>$task->complete_scheduled_on,
+                'planned_value'=>$task->planned_value,
+                'earned_value'=>$task->earned_value,
+                'actual_cost'=>$task->actual_cost,
+                ];
+            $task->fill($input)->parentSave();
+        }
+        
+        if(Task::checkFailed()){
+            DB::rollBack();
+            throw new \Exception("チェックで誤りが生じました。");
+        } else{
+            DB::commit();
+        }
+        
+    }
+    private function parentSave(){
+        parent::save();
     }
 }

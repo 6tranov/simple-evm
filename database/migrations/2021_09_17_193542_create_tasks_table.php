@@ -35,6 +35,11 @@ class CreateTasksTable extends Migration
             
             $table->timestamps();
         });
+        
+        DB::statement('alter table tasks add constraint nameLength check(char_length(name)>=1)');
+        DB::statement('alter table tasks add constraint scheduleDateOrder check(start_scheduled_on <= complete_scheduled_on)');
+        DB::statement('alter table tasks add constraint DateOrder check(started_on <= completed_on)');
+        DB::statement('alter table tasks add constraint pvValue check(planned_value >= 1)');
     }
 
     /**

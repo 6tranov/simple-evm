@@ -30,3 +30,4 @@ Route::delete('/projects/{project}','ProjectsController@delete');
 
 Route::get('/tasks/{task}','TasksController@edit');
 Route::put('/tasks/{task}','TasksController@update');
+Route::put('/projects/{project}/task-orders','TasksController@updateOrders');

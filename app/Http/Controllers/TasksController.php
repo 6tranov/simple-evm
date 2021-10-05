@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Task;
 use App\Project;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\UpdateTaskOrdersRequest;
 
 class TasksController extends Controller
 {
@@ -16,10 +17,16 @@ class TasksController extends Controller
         return view('Task.edit')->with(['task'=>$task,'project'=>$project]);
     }
     public function update(UpdateTaskRequest $request,Task $task){
+        //これを編集する
         $input = $request['task'];
         $task->fill($input)->save();
         
         return redirect('/projects/' . $task->project_id);
+    }
+    public function updateOrders(UpdateTaskOrdersRequest $request,Project $project){
+        Task::updateOrders($request);
+        
+        return redirect('/projects/' . $project->id);
     }
     public function editOrders(Project $project){
         $tasksArray = Task::getOrderedTasksArrayByProjectId($project->id);
