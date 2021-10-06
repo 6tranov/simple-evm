@@ -17,9 +17,8 @@ class TasksController extends Controller
         return view('Task.edit')->with(['task'=>$task,'project'=>$project]);
     }
     public function update(UpdateTaskRequest $request,Task $task){
-        //これを編集する
         $input = $request['task'];
-        $task->fill($input)->save();
+        $task->updateTask($input);
         
         return redirect('/projects/' . $task->project_id);
     }
