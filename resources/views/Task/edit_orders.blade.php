@@ -48,9 +48,9 @@
          
             
             
+          <div id="appDraggable">
           @foreach ($tasksArray as $tasks)
           <br>
-          <div id="appDraggable">
             <table border="1" class="tasks-table">
               <thread>
                 <tr>
@@ -66,8 +66,8 @@
               @endforeach
               </tbody>
             </table>
-          </div>
           @endforeach
+          </div>
           
           <br>
         <div style="text-align:center;">
