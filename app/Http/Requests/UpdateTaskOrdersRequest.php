@@ -27,9 +27,7 @@ class UpdateTaskOrdersRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_task_order'=>'required',
-            'new_task_order'=>'required',
-            'id'=>'required'
+            'id'=>'required',
         ];
     }
 }

@@ -23,7 +23,8 @@ class TasksController extends Controller
         return redirect('/projects/' . $task->project_id);
     }
     public function updateOrders(UpdateTaskOrdersRequest $request,Project $project){
-        Task::updateOrders($request);
+        $idArray = $request['id'];
+        Task::updateOrders($idArray,$project->id);
         
         return redirect('/projects/' . $project->id);
     }

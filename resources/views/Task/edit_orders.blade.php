@@ -61,8 +61,6 @@
               @foreach ($tasks as $task)
                 <tr>
                   <td><a href="/tasks/{{$task->id}}">{{$task->name}}</a></td><td>{{$task->start_scheduled_on}}</td><td>{{$task->complete_scheduled_on}}</td><td>{{$task->started_on}}</td><td>{{$task->completed_on}}</td><td>{{$task->planned_value}}</td><td>{{$task->earned_value}}</td><td>{{$task->actual_cost}}</td>
-                  <input type="hidden" name="old_task_order[]" value="{{$task->order_index}}">
-                  <input type="hidden" name="new_task_order[]" value="{{$task->order_index}}">
                   <input type="hidden" name="id[]" value="{{$task->id}}">
                 </tr>
               @endforeach

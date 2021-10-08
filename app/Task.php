@@ -296,6 +296,45 @@ class Task extends Model
         
         return $result;
     }
+    private static function getOrderedTasksByProjectId($project_id){
+        //順番を変えられる（開始予定と完了予定が等しい）タスクを取得する。
+        //そして日付ごとに配列にして、2次元の配列をreturnする。
+        $tasks = DB::table('tasks')->where('project_id',$project_id)->whereColumn('start_scheduled_on','complete_scheduled_on')->orderBy('order_index')->get();
+    
+        //2つ以上同じ日付のものがあるタスクに絞る
+        //まず、2つ以上存在する日付を抽出する。
+        $is_extracted = false;
+        $formerDate = NULL;
+        $extractedDates = [];
+        foreach ($tasks as $task) {
+            if(($formerDate == $task->start_scheduled_on) && !$is_extracted){
+                $extractedDates[]=$task->start_scheduled_on;
+                $is_extracted = true;
+            } elseif ($formerDate !== $task->start_scheduled_on){
+                $is_extracted = false;
+            }
+            $formerDate = $task->start_scheduled_on;
+        }
+        
+        function hasExtractedDate($task,$extractedDates){
+            foreach ($extractedDates as $date) {
+                if($date == $task->start_scheduled_on) return true;
+            }
+            return false;
+        }
+        
+        //抽出された日付を持つタスクだけを抽出する。
+        $extractedTasks = [];
+        foreach ($tasks as $task) {
+            if(hasExtractedDate($task,$extractedDates)){
+                $extractedTasks[]=$task;
+            }
+        }
+        
+        if(count($extractedTasks) == 0)return [];
+        
+        return $extractedTasks;
+    }
     public function save(array $options = [])//Override
     {
         DB::beginTransaction();
@@ -378,21 +417,22 @@ class Task extends Model
         }
         return false;
     }
-    public static function updateOrders($request){
-        $old_task_order = $request['old_task_order'];
-        $new_task_order = $request['new_task_order'];
-        $id = $request['id'];
-        
+    public static function updateOrders($idArray,$project_id){
         DB::beginTransaction();
         
-        //すべてのタスクに対して、それを登録しなおす。
-        for ($i = 0; $i < count($id); $i++) {
-            $task = Task::find($id[$i]);
+        //old_order_indexの列を取得する。
+        $old_ordered_tasks = Task::getOrderedTasksByProjectId($project_id);
+        for ($i = 0; $i < count($idArray); $i++) {
+            $old_order_index = $old_ordered_tasks[$i]->order_index;
+            $id = $idArray[$i];
+            
+            //taskのorder_indexのみ登録しなおす。
+            $task=Task::find($id);
             $input = [
                 'id'=>$task->id,
                 'name'=>$task->name,
                 'project_id'=>$task->project_id,
-                'order_index'=>$new_task_order[$i],
+                'order_index'=>$old_order_index,
                 'start_scheduled_on'=>$task->start_scheduled_on,
                 'complete_scheduled_on'=>$task->complete_scheduled_on,
                 'planned_value'=>$task->planned_value,
