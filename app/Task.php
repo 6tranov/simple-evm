@@ -19,7 +19,6 @@ class Task extends Model
         'actual_cost',
         'project_id',
         'order_index',
-        //'previous_task_id',
     ];
     
     public static function getTasksByProjectId($project_id){
@@ -62,7 +61,6 @@ class Task extends Model
         }
         
         //タスクの登録
-        //$previous_task_id = NULL;
         $start_datetime = new \DateTime($start);
         $complete_datetime = new \DateTime($start);
         for ($i = 0; $i < $dateSpan; $i++) {
@@ -76,7 +74,6 @@ class Task extends Model
                 'actual_cost'=>0,
                 'project_id' => $project_id,
                 'order_index' => $order_index,
-                //'previous_task_id' => $previous_task_id,
                 ];
             //$this->fill($data)->save();
             $task = new Task($data);
@@ -84,7 +81,6 @@ class Task extends Model
             
             $start_datetime->modify('+1day');
             $complete_datetime->modify('+1day');
-            //$previous_task_id = $task->id;
         }
         
         
@@ -396,7 +392,7 @@ class Task extends Model
                 'id'=>$task->id,
                 'name'=>$task->name,
                 'project_id'=>$task->project_id,
-                'order_index'=>$task->order_index,
+                'order_index'=>$new_task_order[$i],
                 'start_scheduled_on'=>$task->start_scheduled_on,
                 'complete_scheduled_on'=>$task->complete_scheduled_on,
                 'planned_value'=>$task->planned_value,

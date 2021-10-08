@@ -6,7 +6,10 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+//window.Vue = require('vue');
+import Vue from 'vue'
+
+import draggable from 'vuedraggable'//draggableコンポーネントの読み込み
 
 /**
  * The following block of code may be used to automatically register your
@@ -29,4 +32,50 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    data:{
+        name:"Tom"
+    }
+});
+
+//draggableに使用する
+const appDraggable = new Vue({
+  el: "#appDraggable",
+  components: {
+    'draggable': draggable,
+  },
+  methods: {
+        onstart: (e) => {
+          console.log("onstart")
+        },
+        onadd: (e) => {
+          console.log("onadd")
+        },
+        onremove: (e) => {
+          console.log("onremove")
+        },
+        onupdate: (e) => {
+          console.log("onupdate")
+        },
+        onend: (e) => {
+          console.log("onend")
+          //ここにnew_order_indexを順番通りにするコードを書く。
+          //対象としているテーブルの要素
+        },
+        onchoose: (e) => {
+          console.log("onchoose")
+        },
+        onsort: (e) => {
+          console.log("onsort")
+        },
+        onfilter: (e) => {
+          console.log("onfilter")
+        },
+        onclone: (e) => {
+          console.log("onclone")
+        },
+        onmove: (e) => {
+          console.log("onmove")
+          return true
+        }
+      }
 });
