@@ -16,7 +16,19 @@
 
                     You are logged in!
                 </div>
+                
+                
             </div>
+            
+            <br/>
+            <div style="text-align:center; padding:0 auto;">
+                <a href="/profile" style="border:solid; text-align:center; padding:0 auto;">プロフィール</a>
+            </div>
+            <br/>
+            <div style="text-align:center; padding:0 auto;">
+                <a href="/projects" style="border:solid; text-align:center; padding:0 auto;">プロジェクト一覧</a>
+            </div>
+            
         </div>
     </div>
 </div>
