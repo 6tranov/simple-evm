@@ -62,6 +62,7 @@
                 margin-bottom: 30px;
             }
         </style>
+        
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -96,5 +97,26 @@
                 </div>
             </div>
         </div>
+        
+            
+        <div id="appDraggable">
+            
+            <draggable :options="{animation: 200}" :move="onmove" @start="onstart" @add="onadd" @remove="onremove" @update="onupdate" @end="onend" @choose="onchoose" @sort="onsort" @filter="onfilter" @clone="onclone">
+                <p>A<input type="hidden" name="order[]" value="1"></p>
+                <p>B<input type="hidden" name="order[]" value="2"></p>
+                <p>C<input type="hidden" name="order[]" value="3"></p>
+                <p>D<input type="hidden" name="order[]" value="4"></p>
+            </draggable>
+            <br/>
+            <draggable :options="{animation: 200}" :move="onmove" @start="onstart" @add="onadd" @remove="onremove" @update="onupdate" @end="onend" @choose="onchoose" @sort="onsort" @filter="onfilter" @clone="onclone">
+                <p>A<input type="hidden" name="order[]" value="5"></p>
+                <p>B<input type="hidden" name="order[]" value="6"></p>
+                <p>C<input type="hidden" name="order[]" value="7"></p>
+                <p>D<input type="hidden" name="order[]" value="8"></p>
+            </draggable>
+        </div>
+        
+            
+        <script src="{{mix('js/app.js')}}"></script>
     </body>
 </html>

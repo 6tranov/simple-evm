@@ -17,14 +17,25 @@ class Project extends Model
         "user_id",
         ];
     public function spi(){
-        $evSum = DB::table('tasks')->where('project_id',$this->id)->sum('earned_value') ?? 0;
-        $pvSum = DB::table('tasks')->where('project_id',$this->id)->sum('planned_value');
+        $today = date('Y-m-d');
+        
+        //$evSum = DB::table('tasks')->where('project_id',$this->id)->sum('earned_value') ?? 0;
+        //$pvSum = DB::table('tasks')->where('project_id',$this->id)->sum('planned_value');
+        
+        $evSum = DB::table('tasks')->where([['project_id','=',$this->id]])->sum('earned_value');
+        $pvSum = DB::table('tasks')->where([['project_id','=',$this->id],['complete_scheduled_on','<=',$today]])->sum('planned_value');
+        
         if($pvSum === 0) return 0;
         return $evSum / $pvSum;
     }
     public function cpi(){
-        $evSum = DB::table('tasks')->where('project_id',$this->id)->sum('earned_value') ?? 0;
-        $acSum = DB::table('tasks')->where('project_id',$this->id)->sum('actual_cost') ?? 0;
+        //$today = date('Y-m-d');
+        //$evSum = DB::table('tasks')->where('project_id',$this->id)->sum('earned_value') ?? 0;
+        //$acSum = DB::table('tasks')->where('project_id',$this->id)->sum('actual_cost') ?? 0;
+        
+        $evSum = DB::table('tasks')->where([['project_id','=',$this->id]])->sum('earned_value');
+        $acSum = DB::table('tasks')->where([['project_id','=',$this->id]])->sum('actual_cost');
+        
         if($acSum === 0) return 0;
         return $evSum / $acSum;
     }
