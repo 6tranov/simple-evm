@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Follow;
+use App\User;
 use App\Http\Requests\StoreFollowRequest;
 use App\Http\Requests\DeleteFollowRequest;
 
@@ -48,5 +49,15 @@ class FollowsController extends Controller
         
         //フォロー解除したユーザーのプロフィールページリダイレクト
         return redirect("/users/${followedId}/profile");
+    }
+    public function othersFollowsIndex(User $user){
+        $followingUsers = Follow::getFollowingUsersById($user->id);
+        
+        return view("Follow.others_follows_index")->with(["user"=>$user,"followingUsers"=>$followingUsers,]);
+    }
+    public function othersFollowersIndex(User $user){
+        $followers = Follow::getFollowersById($user->id);
+        
+        return view("Follow.others_followers_index")->with(["user"=>$user,"followers"=>$followers]);
     }
 }
