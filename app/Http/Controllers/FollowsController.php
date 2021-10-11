@@ -33,20 +33,20 @@ class FollowsController extends Controller
         //フォロー関係を登録
         Follow::storeFollow($followingId,$followedId);
         
-        //フォロー一覧にリダイレクト
-        return redirect('/follows');
+        //フォローしたユーザーのプロフィールページにリダイレクト
+        return redirect("/users/${followedId}/profile");
     }
     public function delete(DeleteFollowRequest $request){
         //フォローするユーザーのID
         $followingId = Auth::user()->id;
         
         //フォローされるユーザーのID
-        $followedId = $request['followed_d'];
+        $followedId = $request['followed_id'];
         
         //フォロー関係を解除
         Follow::deleteFollow($followingId,$followedId);
         
-        //フォロー一覧にリダイレクト
-        return redirect('/follows');    
+        //フォロー解除したユーザーのプロフィールページリダイレクト
+        return redirect("/users/${followedId}/profile");
     }
 }

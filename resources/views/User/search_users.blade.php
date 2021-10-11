@@ -23,7 +23,7 @@
     </head>
     <body class="body">
         
-        <div class="top">フォロー一覧</div>
+        <div class="top">ユーザー検索</div>
         
         <div style="width:80%; margin:0 auto;">
             
@@ -65,7 +65,7 @@
                 </tr>
                 @foreach($users as $user)
                 <tr>
-                  <td><a href="users/{{$user->id}}/profile">{{$user->name}}</a></td><td>{{$user->biography}}</td>
+                  <td><a href="/users/{{$user->id}}/profile">{{$user->name}}</a></td><td>{{$user->biography}}</td>
                 </tr>  
                 @endforeach
               </table>

@@ -43,3 +43,5 @@ Route::post('/follows','FollowsController@store');
 Route::delete('/follows','FollowsController@delete');
 
 Route::get('/users/search','UsersController@searchUsers');
+
+Route::get('/users/{user}/profile','UsersController@showOthersProfile');
