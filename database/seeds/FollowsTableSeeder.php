@@ -15,18 +15,26 @@ class FollowsTableSeeder extends Seeder
         // 初期化
         DB::table('follows')->delete();
         
-        //二人のユーザーのidを取得
+        //すべてのユーザーのidを取得
         $users = DB::table('users')->get();
         foreach($users as $user){
             $user_id[] = $user->id;
         }
         
-        // テストデータ挿入
-        DB::table('follows')->insert(
-            [
-                'following_id' => $user_id[0],
-                'followed_id' => $user_id[1],
-            ]
-            );
+        //すべてのユーザーが互いにフォローをする
+        //自分で自分をフォローしないようにする。
+        foreach ($user_id as $following_id) {
+            foreach ($user_id as $followed_id) {
+                if($following_id != $followed_id){
+                    DB::table('follows')->insert(
+                    [
+                        'following_id' => $following_id,
+                        'followed_id' => $followed_id,
+                    ]
+                    );
+                }
+            }
+        }
+        
     }
 }
