@@ -40,4 +40,9 @@ class Follow extends Model
             ])->first();
         return !is_null($user);
     }
+    private static function checkFailed(&$exception):bool{
+        /*
+        
+        */
+    }
 }
