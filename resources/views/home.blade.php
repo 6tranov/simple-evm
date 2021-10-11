@@ -29,6 +29,10 @@
                 <a href="/projects" style="border:solid; text-align:center; padding:0 auto;">プロジェクト一覧</a>
             </div>
             
+            <br/>
+            <div style="text-align:center; padding:0 auto;">
+                <a href="/users/search" style="border:solid; text-align:center; padding:0 auto;">ユーザー検索</a>
+            </div>
         </div>
     </div>
 </div>

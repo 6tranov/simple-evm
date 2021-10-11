@@ -33,3 +33,13 @@ Route::delete('/projects/{project}','ProjectsController@delete');
 Route::get('/tasks/{task}','TasksController@edit');
 Route::put('/tasks/{task}','TasksController@update');
 Route::put('/projects/{project}/task-orders','TasksController@updateOrders');
+
+Route::get('/profile','UsersController@showProfile');
+
+Route::get('/follows','FollowsController@followsIndex');
+Route::get('/followers','FollowsController@followersIndex');
+
+Route::post('/follows','FollowsController@store');
+Route::delete('/follows','FollowsController@delete');
+
+Route::get('/users/search','UsersController@searchUsers');

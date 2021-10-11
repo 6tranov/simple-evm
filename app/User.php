@@ -36,4 +36,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    
+    public static function searchUsers($for,$query){
+        switch ($for) {
+            case 'id':
+                return \DB::table('users')->where('id',$query)->get();
+                break;
+            case 'name':
+                return \DB::table('users')->where('name','like',"%${query}%")->get();
+                break;
+            case 'bio':
+                return \DB::table('users')->where('biography','like',"%${query}%")->get();
+                break;
+            default:
+                return [];
+                break;
+        }
+    }
 }
