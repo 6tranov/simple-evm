@@ -62,12 +62,6 @@
                 <input type="submit" value="フォロー解除する">
                 <input type="hidden" name="followed_id" value="{{$user->id}}">
               </form>
-            @else
-              <form method="post" action="/follows">
-                @csrf
-                <input type="submit" value="フォローする">
-                <input type="hidden" name="followed_id" value="{{$user->id}}">
-              </form>
             @endif
            </div>
         </div>
