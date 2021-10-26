@@ -30,6 +30,7 @@ class FollowsTableSeeder extends Seeder
                     [
                         'following_id' => $following_id,
                         'followed_id' => $followed_id,
+                        'is_authenticated' => true,
                     ]
                     );
                 }

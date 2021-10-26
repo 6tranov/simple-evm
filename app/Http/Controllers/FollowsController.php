@@ -8,6 +8,9 @@ use App\Follow;
 use App\User;
 use App\Http\Requests\StoreFollowRequest;
 use App\Http\Requests\DeleteFollowRequest;
+use App\Http\Requests\ApplyFollowRequest;
+use App\Http\Requests\CancellFollowApplicationRequest;
+use App\Http\Requests\ApproveFollowApplicationRequest;
 
 class FollowsController extends Controller
 {
@@ -59,5 +62,36 @@ class FollowsController extends Controller
         $followers = Follow::getFollowersById($user->id);
         
         return view("Follow.others_followers_index")->with(["user"=>$user,"followers"=>$followers]);
+    }
+    public function apply(ApplyFollowRequest $request){
+        $following_id = Auth::user()->id;
+        $followed_id = $request['followed_id'];
+        Follow::apply($following_id,$followed_id);
+        
+        return redirect("users/${followed_id}/profile");
+    }
+    public function cancellApplication(CancellFollowApplicationRequest $request){
+        $following_id = Auth::user()->id;
+        $followed_id = $request['followed_id'];
+        Follow::cancellApplication($following_id,$followed_id);
+        
+        return redirect("/follows/applications");
+    }
+    public function approve(ApproveFollowApplicationRequest $request){
+        $followed_id = Auth::user()->id;
+        $following_id = $request['following_id'];
+        Follow::approve($followed_id,$following_id);
+        
+        return redirect("/follows/applicants");
+    }
+    public function followApplicantsIndex(){
+        $id = Auth::user()->id;
+        $users = Follow::getApplicantsById($id);
+        return view("Follow.follow_applicants_index")->with(["users"=>$users]);
+    }
+    public function followApplicationsIndex(){
+        $id = Auth::user()->id;
+        $users = Follow::getApplicationsById($id);
+        return view("Follow.follow_applications_index")->with(["users"=>$users]);
     }
 }
