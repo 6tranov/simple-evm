@@ -8,6 +8,7 @@ use App\Task;
 use App\Project;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Requests\UpdateTaskOrdersRequest;
+use APp\Http\Requests\StoreTaskRequest;
 
 class TasksController extends Controller
 {
@@ -31,5 +32,13 @@ class TasksController extends Controller
     public function editOrders(Project $project){
         $tasksArray = Task::getOrderedTasksArrayByProjectId($project->id);
         return view('Task.edit_orders')->with(['tasksArray'=>$tasksArray,'project'=>$project]);
+    }
+    public function store(StoreTaskRequest $request){
+        $input = $request['task'];
+        $task = new Task();
+        $task->fill(input);
+        $task->save();
+        
+        return $task->toArray();
     }
 }

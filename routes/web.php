@@ -54,3 +54,5 @@ Route::get('/users/{user}/followers','FollowsController@othersFollowersIndex');
 
 Route::get('/follows/applicants','FollowsController@followApplicantsIndex');
 Route::get('/follows/applications','FollowsController@followApplicationsIndex');
+
+Route::post('/tasks','TasksController@store');
