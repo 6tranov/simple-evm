@@ -55,20 +55,30 @@
             
             <br/>
           <div style="text-align:center;">
-            @if($isFollowing == true)
-              <form method="post" action="/follows">
-                @csrf
-                @method('DELETE')
-                <input type="submit" value="フォロー解除する">
-                <input type="hidden" name="followed_id" value="{{$user->id}}">
-              </form>
-            @else
-              <form method="post" action="/follows">
-                @csrf
-                <input type="submit" value="フォローする">
-                <input type="hidden" name="followed_id" value="{{$user->id}}">
-              </form>
-            @endif
+            @switch($relationship)
+              @case('applying')
+                <form method="post" action="/follows/application">
+                  @csrf
+                  @method('DELETE')
+                  <input type="submit" value="申請解除する">
+                  <input type="hidden" name="followed_id" value="{{$user->id}}">
+                </form>
+                @break
+              @case('following')
+                <form method="post" action="/follows">
+                  @csrf
+                  @method('DELETE')
+                  <input type="submit" value="フォロー解除する">
+                  <input type="hidden" name="followed_id" value="{{$user->id}}">
+                </form>
+                @break
+              @default
+                <form method="post" action="/follows/application">
+                  @csrf
+                  <input type="submit" value="フォロー申請する">
+                  <input type="hidden" name="followed_id" value="{{$user->id}}">
+                </form>
+            @endswitch
            </div>
         </div>
         

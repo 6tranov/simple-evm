@@ -26,7 +26,8 @@ class UsersController extends Controller
     public function showOthersProfile(User $user){
         if($user->id == Auth::user()->id) return redirect("/profile");
         
-        $isFollowing = Follow::isFollowing(Auth::user()->id,$user->id);
-        return view('User.show_others_profile')->with(['user'=>$user,'isFollowing'=>$isFollowing,]);
+        //$isFollowing = Follow::isFollowing(Auth::user()->id,$user->id);
+        $relationship = Follow::getRelationship(Auth::user()->id,$user->id);
+        return view('User.show_others_profile')->with(['user'=>$user,'relationship'=>$relationship]);//'isFollowing'=>$isFollowing,]);
     }
 }

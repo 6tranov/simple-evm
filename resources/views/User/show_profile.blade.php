@@ -47,6 +47,16 @@
             </div>
             
             <br/>
+            <div style="text-align:center">
+                <a href="/follows/applicants" style="border:solid; border-color:black;">フォロー申請受付一覧</a>
+            </div>
+            
+            <br/>
+            <div style="text-align:center">
+                <a href="/follows/applications" style="border:solid; border-color:black;">フォロー申請済み一覧</a>
+            </div>
+            
+            <br/>
             <div style="margin:0 auto; text-align:center; border:solid;  display:table;">
                 <div style="border-bottom:solid;">bio</div>
                 <div >{{$user->biography}}</div>

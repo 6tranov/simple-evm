@@ -453,4 +453,19 @@ class Task extends Model
     private function parentSave(){
         parent::save();
     }
+    public static function add($input){
+        $name = $input['name'];
+        $started_on = $input['started_on'];
+        $completed_on = $input['completed_on'];
+        $pv = $input['planned_value'];
+        $ev = $input['earned_value'];
+        $ac = $input['actual_cost'];
+        
+        $old_start_scheduled_on = $this->start_scheduled_on;
+        $old_complete_scheduled_on = $this->complete_scheduled_on;
+        $new_start_scheduled_on = $input['start_scheduled_on'];
+        $new_complete_scheduled_on = $input['complete_scheduled_on'];
+        
+        //comment
+    }
 }

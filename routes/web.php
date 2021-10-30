@@ -39,8 +39,11 @@ Route::get('/profile','UsersController@showProfile');
 Route::get('/follows','FollowsController@followsIndex');
 Route::get('/followers','FollowsController@followersIndex');
 
-Route::post('/follows','FollowsController@store');
+//Route::post('/follows','FollowsController@store');
+Route::post('follows/application','FollowsController@apply');
 Route::delete('/follows','FollowsController@delete');
+Route::delete('/follows/application','FollowsController@cancellApplication');
+Route::put('/follows/application','FollowsController@approve');
 
 Route::get('/users/search','UsersController@searchUsers');
 
@@ -48,3 +51,8 @@ Route::get('/users/{user}/profile','UsersController@showOthersProfile');
 
 Route::get('/users/{user}/follows','FollowsController@othersFollowsIndex');
 Route::get('/users/{user}/followers','FollowsController@othersFollowersIndex');
+
+Route::get('/follows/applicants','FollowsController@followApplicantsIndex');
+Route::get('/follows/applications','FollowsController@followApplicationsIndex');
+
+Route::post('/tasks','TasksController@store');
